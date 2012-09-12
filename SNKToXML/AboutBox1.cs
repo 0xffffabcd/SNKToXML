@@ -95,6 +95,7 @@ namespace SNKToXML
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }
-        #endregion
+
+        #endregion Assembly Attribute Accessors
     }
 }

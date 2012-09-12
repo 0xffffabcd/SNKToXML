@@ -18,7 +18,7 @@ namespace SNKToXML
         {
             var openFileDialog = new OpenFileDialog
                 {
-                    Title = "Open your snk file",
+                    Title = "Open your SNK file",
                     Filter = "Strong Name Key file (*.snk)|*.snk|All Files (*.*)|*.*"
                 };
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -28,13 +28,12 @@ namespace SNKToXML
                 try
                 {
                     var snkBytes = File.ReadAllBytes(openFileDialog.FileName);
-                
+
                     using (var provider = new RSACryptoServiceProvider())
                     {
                         provider.ImportCspBlob(snkBytes);
                         publicKeyTextBox.Text = Beautify(provider.ToXmlString(false));
                         privateKeyTextBox.Text = Beautify(provider.ToXmlString(true));
-                        
                     }
                 }
                 catch (Exception exception)
@@ -44,14 +43,13 @@ namespace SNKToXML
             }
         }
 
-        static public string Beautify(string xmlString)
+        private static string Beautify(string xmlString)
         {
             var doc = new XmlDocument();
             doc.LoadXml(xmlString);
             var sb = new StringBuilder();
-            var settings = new XmlWriterSettings
-                {Indent = true, IndentChars = "  ", NewLineChars = Environment.NewLine, NewLineHandling = NewLineHandling.Replace};
-            using (XmlWriter writer = XmlWriter.Create(sb, settings))
+            var settings = new XmlWriterSettings { Indent = true, IndentChars = "  ", NewLineChars = Environment.NewLine, NewLineHandling = NewLineHandling.Replace };
+            using (var writer = XmlWriter.Create(sb, settings))
             {
                 doc.Save(writer);
             }
@@ -111,6 +109,5 @@ namespace SNKToXML
                 aboutBox.ShowDialog();
             }
         }
-        
     }
 }
